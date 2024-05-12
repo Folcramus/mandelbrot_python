@@ -18,13 +18,13 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x, y)
 
 
 
-z0 = complex(input())
+z0 = complex(input("начальное z0: "))
 
-n_iter = int(input())
+n_iter = int(input("N: "))
 
-r0 = int(input())
+r0 = int(input("R: "))
 
-a = int(input())
+a = int(input("a: "))
 
 pygame.init()
 W = 600
