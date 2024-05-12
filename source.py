@@ -17,6 +17,15 @@ os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x, y)
 # --------------------------------------------------------------------
 
 
+
+z0 = complex(input())
+
+n_iter = int(input())
+
+r0 = int(input())
+
+a = int(input())
+
 pygame.init()
 W = 600
 H = 600
@@ -29,7 +38,6 @@ clock = pygame.time.Clock()
 P = 300  # размер [2*P+1 x 2*P+1]
 scale = P / 2  # масштабный коэффициент
 view = [0, 0]  # координаты смещения угла обзора
-n_iter = 100  # число итераций для проверки принадлежности к множеству Мандельброта
 booling = True
 
 sc = pygame.display.set_mode((W, H))
@@ -42,7 +50,7 @@ def calcig(z, c):
     for n in prange(n_iter):
         k = n
         z = z ** 4 + c
-        if abs(z) > 2:
+        if abs(z) > a:
             return k
     return k
 
@@ -53,17 +61,17 @@ def mandelbrot(P, scale, view, n_iter):
             a = x / scale
             b = y / scale
             c = complex(a, b)
-            z = complex(0)
+            z = z0
             n = calcig(z, c)
 
             if n == n_iter - 1:
                 r = g = b = 0
             else:
-                r = (n % 2) * 32 + 128
-                g = (n % 4) * 64
-                b = (n % 2) * 16 + 128
+                r = (n % 4) * 32 + 128
+                g = (n % 4) * 32 + 128
+                b = (n % 4) * 32 + 128
 
-            pygame.draw.circle(sc, (r, g, b), (x + P - view[0], y + P - view[1]), 1)
+            pygame.draw.circle(sc, (r, g, b), (x + P - view[0], y + P - view[1]), r0)
 
 
 if booling:
@@ -76,21 +84,23 @@ while True:
             exit()
         if event.type == pygame.MOUSEWHEEL:
             if event.y == 1:
-                scale += 20
+                scale += 50
+                print(1)
             if event.y == -1:
-                scale -= 20
+                scale -= 50
+                print(-1)
             mandelbrot(P, scale, view, n_iter)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_i:
                 pygame.image.save(sc, 'abc.jpg')
             if event.key == pygame.K_a:
-                view[0] += 10
+                view[0] -= 25
             if event.key == pygame.K_d:
-                view[0] -= 10
+                view[0] += 25
             if event.key == pygame.K_w:
-                view[1] += 10
+                view[1] -= 25
             if event.key == pygame.K_s:
-                view[1] -= 10
+                view[1] += 25
             mandelbrot(P, scale, view, n_iter)
     pygame.display.update()
     clock.tick(FPS)
