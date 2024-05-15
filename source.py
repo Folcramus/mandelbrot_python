@@ -51,11 +51,12 @@ def calcig(z, c):
         k = n
         z = z ** 4 + c
         if abs(z) > a:
-            return k
+            break
     return k
 
 
 def mandelbrot(P, scale, view, n_iter):
+
     for y in prange(-P + view[1], P + view[1]):
         for x in prange(-P + view[0], P + view[0]):
             a = x / scale
@@ -84,23 +85,26 @@ while True:
             exit()
         if event.type == pygame.MOUSEWHEEL:
             if event.y == 1:
-                scale += 50
+                scale += 150
                 print(1)
+                mandelbrot(P, scale, view, n_iter)
             if event.y == -1:
-                scale -= 50
+
+                scale -= 150
                 print(-1)
-            mandelbrot(P, scale, view, n_iter)
+                if scale > 0:
+                    mandelbrot(P, scale, view, n_iter)
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_i:
                 pygame.image.save(sc, 'abc.jpg')
             if event.key == pygame.K_a:
-                view[0] -= 25
+                view[0] -= 125
             if event.key == pygame.K_d:
-                view[0] += 25
+                view[0] += 125
             if event.key == pygame.K_w:
-                view[1] -= 25
+                view[1] -= 125
             if event.key == pygame.K_s:
-                view[1] += 25
+                view[1] += 125
             mandelbrot(P, scale, view, n_iter)
     pygame.display.update()
     clock.tick(FPS)
